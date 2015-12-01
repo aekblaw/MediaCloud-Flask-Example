@@ -4,6 +4,55 @@
 
 {% block content %}
 
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+<script src="https://code.highcharts.com/highcharts.js"></script>
+<script src="https://code.highcharts.com/modules/exporting.js"></script>
+
+
+
+
+<script>
+$(function () {
+
+  var weeks = {{ weeks|tojson }}
+  var references = {{ data|tojson }}
+
+    $('#chart').highcharts({
+        title: {
+            text: 'References to Keyword(s) By Week in US Mainstream Media',
+            x: -20 //center
+        },
+        xAxis: {
+            categories: weeks
+        },
+        yAxis: {
+            title: {
+                text: 'Number of References'
+            },
+            plotLines: [{
+                value: 0,
+                width: 1,
+                color: '#808080'
+            }]
+        },
+        legend: {
+            layout: 'vertical',
+            align: 'right',
+            verticalAlign: 'middle',
+            borderWidth: 0
+        },
+        series: [{
+            name: 'References to keyword(s)',
+            data: references
+        }]
+    });
+});
+</script>  
+
+
+
+
 <div class="row">
 
   <div class="col-md-12">
@@ -12,10 +61,19 @@
 
     <p>You searched for "{{keywords}}"</p>
 
-    <p>In the US Mainstream Media online there have {{ sentenceCount }} sentences matching your search so far this year.</p>
+    <p>In the US Mainstream Media online there have been {{ sentenceCount }} sentences matching your search for the chosen period.</p>
+
+    <p>See a chart visualizing your search result data, below</p> <br><br>
+
+    <div id="chart" style="min-width: 310px; height:40%; margin:0 auto"></div>
+
+    
+
+
 
   </div>
 
-</div>    
+</div> 
+
 
 {% endblock %}
